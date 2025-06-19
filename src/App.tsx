@@ -7,7 +7,6 @@ import Dashboard from './components/Dashboards';
 import ReportViewer from './components/ReportViewer';
 import Scripts from './components/Scripts';
 import Knowledge from './components/Knowledge';
-import PolicyViewer from './components/PolicyViewer';
 import ArchiveReports from './components/Analytics/ArchiveReports';
 import AnalyticsDashboard from './components/Analytics/Dashboard';
 import axios, { AxiosError } from 'axios';
@@ -137,12 +136,10 @@ function App() {
           <Route index element={<Dashboard user={user} />} />
           <Route path="report/:type" element={<ReportViewer />} />
           <Route path="scripts" element={<Scripts />} />
-          <Route path="knowledge" element={<Knowledge />} />
+          <Route path="knowledge" element={<Knowledge user={user} />} />
           
           <Route path="analytics/archive" element={<ArchiveReports user={user} />} />
           <Route path="analytics/dashboard" element={<AnalyticsDashboard user={user} />} />
-          <Route path="agreement" element={<PolicyViewer type="agreement" />} />
-          <Route path="privacy" element={<PolicyViewer type="privacy" />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

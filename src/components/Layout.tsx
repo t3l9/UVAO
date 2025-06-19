@@ -42,27 +42,6 @@ function Layout({ user, onLogout }: LayoutProps) {
       <main className="max-w-7xl mx-auto px-4 py-8">
         <Outlet />
       </main>
-
-      <footer className="bg-white border-t border-gray-100 py-4 mt-auto">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex justify-center items-center gap-8 mb-4">
-            <Link 
-              to="/agreement" 
-              className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors"
-            >
-              <FileText size={16} />
-              <span>Пользовательское соглашение</span>
-            </Link>
-            <Link 
-              to="/privacy" 
-              className="flex items-center gap-2 text-gray-600 hover:text-primary-600 transition-colors"
-            >
-              <FileText size={16} />
-              <span>Политика конфиденциальности</span>
-            </Link>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
