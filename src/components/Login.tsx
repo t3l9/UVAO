@@ -27,14 +27,6 @@ function Login({ onLogin }: LoginProps) {
         body: JSON.stringify({ login, password }),
       });
 
-      const response1 = await fetch('/chart_data'); // Убедитесь, что путь правильный
-  
-      if (!response1.ok) {
-        const errorText = await response.text();
-        console.error('Server response:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
       const data = await response.json();
 
       if (response.ok) {

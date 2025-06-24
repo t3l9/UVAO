@@ -70,12 +70,21 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
       const folder = reportTypes.find(type => type.id === selectedType)?.folder;
       if (folder) {
         fetch(`/api/archive?folder=${folder}`)
-          .then(response => response.json())
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+          })
           .then(data => {
             setReports(data);
             setFilteredReports(data); // Изначально показываем все отчеты
           })
-          .catch(error => console.error('Error fetching archive:', error));
+          .catch(error => {
+            console.error('Error fetching archive:', error);
+            setReports([]);
+            setFilteredReports([]);
+          });
       }
     }
   }, [selectedType, user.duty]);
