@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, BookOpen, BrainCircuit, HelpCircle, BarChart3, LineChart } from 'lucide-react';
+import { FileText, BookOpen, BrainCircuit, HelpCircle, BarChart3, LineChart, Table, Bot, ExternalLink } from 'lucide-react';
 import { User } from '../types';
 
 interface DashboardProps {
@@ -36,12 +36,30 @@ const additionalSections = [
     title: 'Скрипты',
     description: 'Готовые ответы на обращения граждан с удобной системой фильтрации',
     icon: BrainCircuit,
+    type: 'internal',
   },
   {
     id: 'knowledge',
     title: 'База знаний',
     description: 'Обучающие материалы и полезная информация по работе с задачами',
     icon: BookOpen,
+    type: 'internal',
+  },
+  {
+    id: 'kgh-table',
+    title: 'Таблица КГХ Наш город',
+    description: 'Табличка показывает ситуацию ежечасно в городе по сообщениям КГХ',
+    icon: Table,
+    type: 'external',
+    url: 'https://example.com', // Замените на вашу ссылку на Google форму
+  },
+  {
+    id: 'transfer-bot',
+    title: 'Бот по переносам',
+    description: 'Бот, по которому можно согласовывать переносы сроков сообщений',
+    icon: Bot,
+    type: 'external',
+    url: 'https://t.me/example_bot', // Замените на вашу ссылку на Telegram бота
   },
 ];
 
@@ -84,6 +102,10 @@ const faqItems = [
 ];
 
 function Dashboard({ user }: DashboardProps) {
+  const handleExternalLink = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="space-y-12">
       <div>
@@ -120,21 +142,44 @@ function Dashboard({ user }: DashboardProps) {
       <div>
         <h2 className="text-2xl font-semibold text-gray-900 mb-6">Дополнительные разделы</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {additionalSections.map((section) => (
-            <Link
-              key={section.id}
-              to={`/${section.id}`}
-              className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="flex items-center gap-4">
-                <section.icon className="w-8 h-8 text-purple-600" />
-                <div>
-                  <h3 className="font-medium text-gray-900">{section.title}</h3>
-                  <p className="text-sm text-gray-600">{section.description}</p>
-                </div>
-              </div>
-            </Link>
-          ))}
+          {additionalSections.map((section) => {
+            if (section.type === 'external') {
+              return (
+                <button
+                  key={section.id}
+                  onClick={() => handleExternalLink(section.url!)}
+                  className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow text-left w-full"
+                >
+                  <div className="flex items-center gap-4">
+                    <section.icon className="w-8 h-8 text-purple-600" />
+                    <div className="flex-grow">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-medium text-gray-900">{section.title}</h3>
+                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                      </div>
+                      <p className="text-sm text-gray-600">{section.description}</p>
+                    </div>
+                  </div>
+                </button>
+              );
+            } else {
+              return (
+                <Link
+                  key={section.id}
+                  to={`/${section.id}`}
+                  className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-center gap-4">
+                    <section.icon className="w-8 h-8 text-purple-600" />
+                    <div>
+                      <h3 className="font-medium text-gray-900">{section.title}</h3>
+                      <p className="text-sm text-gray-600">{section.description}</p>
+                    </div>
+                  </div>
+                </Link>
+              );
+            }
+          })}
         </div>
       </div>
 
