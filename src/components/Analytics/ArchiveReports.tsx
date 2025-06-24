@@ -54,6 +54,8 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
   const [currentPage, setCurrentPage] = useState<number>(1); // Текущая страница пагинации
   const [isTypeDropdownOpen, setIsTypeDropdownOpen] = useState<boolean>(false); // Открыто ли выпадающее меню типов отчетов
   const [expandedDates, setExpandedDates] = useState<Set<string>>(new Set()); // Состояние развернутых дат
+  const [loading, setLoading] = useState<boolean>(false); // Состояние загрузки
+  const [error, setError] = useState<string>(''); // Состояние ошибки
   
   // Состояния для фильтрации по датам
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -69,21 +71,30 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
     if (selectedType && user.duty === 'Префектура') {
       const folder = reportTypes.find(type => type.id === selectedType)?.folder;
       if (folder) {
+        setLoading(true);
+        setError('');
+        
         fetch(`/api/archive?folder=${folder}`)
           .then(response => {
             if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
+              throw new Error(`Ошибка сервера: ${response.status}`);
             }
             return response.json();
           })
           .then(data => {
-            setReports(data);
-            setFilteredReports(data); // Изначально показываем все отчеты
+            console.log('Полученные данные архива:', data);
+            setReports(data || []);
+            setFilteredReports(data || []); // Изначально показываем все отчеты
+            setError('');
           })
           .catch(error => {
-            console.error('Error fetching archive:', error);
+            console.error('Ошибка при загрузке архива:', error);
+            setError(`Ошибка загрузки данных: ${error.message}`);
             setReports([]);
             setFilteredReports([]);
+          })
+          .finally(() => {
+            setLoading(false);
           });
       }
     }
@@ -133,6 +144,7 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
     const folder = reportTypes.find(type => type.id === selectedType)?.folder;
     if (folder && file.type === 'pdf') {
       const url = `/api/archive/download?folder=${folder}&file=${encodeURIComponent(file.name)}`;
+      console.log('Открываем PDF по URL:', url);
       setViewingPdf({
         url,
         title: `${reportDate} - ${file.datetime.split(' ')[1]}`
@@ -143,8 +155,8 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
   // Если пользователь не имеет доступа
   if (user.duty !== 'Префектура') {
     return (
-      <div className="bg-red-50 border-l-4 border-red-500 p-4">
-        <p className="text-red-700">
+      <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4">
+        <p className="text-red-700 dark:text-red-400">
           У вас нет доступа к этому разделу.
         </p>
       </div>
@@ -177,33 +189,33 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
       {/* Модальное окно для просмотра PDF */}
       {viewingPdf && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg w-full h-full max-w-6xl max-h-[90vh] flex flex-col">
-            <div className="flex justify-between items-center p-4 border-b">
-              <h3 className="text-lg font-semibold">{viewingPdf.title}</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg w-full h-full max-w-6xl max-h-[90vh] flex flex-col">
+            <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{viewingPdf.title}</h3>
               <button
                 onClick={() => setViewingPdf(null)}
-                className="p-2 text-gray-600 hover:text-gray-800 rounded-full hover:bg-gray-100"
+                className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <X size={20} />
               </button>
             </div>
             <div className="flex-1 p-4">
-              <object
-                data={viewingPdf.url}
-                type="application/pdf"
-                className="w-full h-full"
+              <iframe
+                src={viewingPdf.url}
+                className="w-full h-full border-0"
+                title={viewingPdf.title}
               >
-                <p>
+                <p className="text-gray-900 dark:text-white">
                   PDF не может быть отображен.{' '}
                   <a
                     href={viewingPdf.url}
                     download
-                    className="text-purple-600 hover:text-purple-800"
+                    className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300"
                   >
                     Скачать PDF
                   </a>
                 </p>
-              </object>
+              </iframe>
             </div>
           </div>
         </div>
@@ -213,40 +225,40 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
       <div className="flex items-center gap-4">
         <Link
           to="/"
-          className="p-2 text-gray-600 hover:text-purple-800 rounded-full hover:bg-purple-50"
+          className="p-2 text-gray-600 dark:text-gray-400 hover:text-purple-800 dark:hover:text-purple-400 rounded-full hover:bg-purple-50 dark:hover:bg-purple-900/20"
         >
           <ArrowLeft size={24} />
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900">Архив отчетов</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Архив отчетов</h1>
       </div>
 
       {/* Описание страницы */}
-      <p className="text-gray-600">
+      <p className="text-gray-600 dark:text-gray-400">
         Архив предоставляет доступ к файлам выбранного отчета. 
         Файлы группируются по датам, а также показывается точное время создания.
       </p>
 
       {/* Выбор типа отчета и фильтры */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           {/* Выбор типа отчета */}
           <div className="relative">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Тип отчета
             </label>
             <div
-              className="flex items-center justify-between p-2 border border-gray-300 rounded cursor-pointer"
+              className="flex items-center justify-between p-2 border border-gray-300 dark:border-gray-600 rounded cursor-pointer bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               onClick={() => setIsTypeDropdownOpen(!isTypeDropdownOpen)}
             >
               <span>{reportTypes.find(type => type.id === selectedType)?.title || 'Выберите тип отчета'}</span>
               <ChevronDown className="w-4 h-4" />
             </div>
             {isTypeDropdownOpen && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg">
+              <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-lg">
                 {reportTypes.map(type => (
                   <div
                     key={type.id}
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                     onClick={() => {
                       setSelectedType(type.id);
                       setIsTypeDropdownOpen(false);
@@ -261,7 +273,7 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
 
           {/* Фильтр по начальной дате */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Дата с
             </label>
             <DatePicker
@@ -269,14 +281,14 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
               onChange={(date: Date | null) => setStartDate(date)}
               dateFormat="dd.MM.yyyy"
               placeholderText="Выберите дату"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               isClearable
             />
           </div>
 
           {/* Фильтр по конечной дате */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Дата по
             </label>
             <DatePicker
@@ -284,7 +296,7 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
               onChange={(date: Date | null) => setEndDate(date)}
               dateFormat="dd.MM.yyyy"
               placeholderText="Выберите дату"
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               isClearable
               minDate={startDate}
             />
@@ -296,28 +308,43 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
           <div className="mb-6">
             <button
               onClick={clearFilters}
-              className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+              className="px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 border border-gray-300 dark:border-gray-600 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               Сбросить фильтры
             </button>
           </div>
         )}
 
+        {/* Состояние загрузки */}
+        {loading && (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-500 border-t-transparent mx-auto"></div>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">Загрузка данных...</p>
+          </div>
+        )}
+
+        {/* Ошибка загрузки */}
+        {error && (
+          <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 mb-6">
+            <p className="text-red-700 dark:text-red-400">{error}</p>
+          </div>
+        )}
+
         {/* Информация о количестве найденных отчетов */}
-        {selectedType && (
-          <div className="mb-4 text-sm text-gray-600">
+        {selectedType && !loading && !error && (
+          <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
             Найдено отчетов: {filteredReports.length} из {reports.length}
           </div>
         )}
 
         {/* Список отчетов */}
-        {selectedType && currentReports.length > 0 ? (
+        {selectedType && !loading && !error && currentReports.length > 0 ? (
           <div className="space-y-4">
             {currentReports.map((report) => (
-              <div key={report.date} className="border border-gray-200 rounded-lg p-4 space-y-2">
+              <div key={report.date} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 space-y-2">
                 {/* Заголовок с датой */}
                 <div
-                  className="flex justify-between items-center text-lg font-medium cursor-pointer"
+                  className="flex justify-between items-center text-lg font-medium cursor-pointer text-gray-900 dark:text-white"
                   onClick={() => toggleDate(report.date)}
                 >
                   <span>{report.date}</span>
@@ -332,11 +359,11 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
                 {expandedDates.has(report.date) && (
                   <div className="space-y-2">
                     {report.files.map((file, index) => (
-                      <div key={index} className="flex justify-between items-center bg-gray-50 p-2 rounded">
+                      <div key={index} className="flex justify-between items-center bg-gray-50 dark:bg-gray-700 p-2 rounded">
                         {/* Время создания файла */}
                         <div className="flex items-center space-x-2">
-                          <span className="text-sm text-gray-600">{file.datetime.split(' ')[1]}</span>
-                          <span className="font-medium">{file.name}</span>
+                          <span className="text-sm text-gray-600 dark:text-gray-400">{file.datetime.split(' ')[1]}</span>
+                          <span className="font-medium text-gray-900 dark:text-white">{file.name}</span>
                         </div>
 
                         {/* Кнопки просмотра и скачивания */}
@@ -384,7 +411,7 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
                   disabled={currentPage === 1}
-                  className="p-2 text-gray-600 hover:text-purple-800 disabled:text-gray-400"
+                  className="p-2 text-gray-600 dark:text-gray-400 hover:text-purple-800 dark:hover:text-purple-400 disabled:text-gray-400 dark:disabled:text-gray-600"
                 >
                   <ChevronLeft size={20} />
                 </button>
@@ -395,7 +422,7 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
                     className={`px-3 py-1 rounded ${
                       currentPage === page
                         ? 'bg-purple-600 text-white'
-                        : 'text-gray-600 hover:bg-purple-50'
+                        : 'text-gray-600 dark:text-gray-400 hover:bg-purple-50 dark:hover:bg-purple-900/20'
                     }`}
                   >
                     {page}
@@ -404,15 +431,15 @@ function ArchiveReports({ user }: ArchiveReportsProps) {
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
                   disabled={currentPage === totalPages}
-                  className="p-2 text-gray-600 hover:text-purple-800 disabled:text-gray-400"
+                  className="p-2 text-gray-600 dark:text-gray-400 hover:text-purple-800 dark:hover:text-purple-400 disabled:text-gray-400 dark:disabled:text-gray-600"
                 >
                   <ChevronRight size={20} />
                 </button>
               </div>
             )}
           </div>
-        ) : selectedType ? (
-          <div className="text-center py-8 text-gray-600">
+        ) : selectedType && !loading && !error ? (
+          <div className="text-center py-8 text-gray-600 dark:text-gray-400">
             {filteredReports.length === 0 && reports.length > 0 
               ? 'Отчеты за выбранный период не найдены'
               : 'Отчеты не найдены'

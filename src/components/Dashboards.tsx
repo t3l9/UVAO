@@ -109,29 +109,29 @@ function Dashboard({ user }: DashboardProps) {
   return (
     <div className="space-y-12">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
           Информационная система Префектуры ЮВАО
         </h1>
-        <p className="text-gray-600 max-w-3xl">
+        <p className="text-gray-600 dark:text-gray-400 max-w-3xl">
           Добро пожаловать в информационную систему Префектуры Юго-Восточного административного округа. Здесь вы можете получить доступ к различным отчетам,
           аналитическим данным и базе знаний, которые помогут вам эффективно работать не только с обращениями граждан, но и с другими задачами.
         </p>
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Отчеты</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Отчеты</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {reportTypes.map((report) => (
             <Link
               key={report.id}
               to={`/report/${report.id}`}
-              className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+              className="block p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all"
             >
               <div className="flex items-center gap-4">
-                <FileText className="w-8 h-8 text-purple-600" />
+                <FileText className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                 <div>
-                  <h3 className="font-medium text-gray-900">{report.title}</h3>
-                  <p className="text-sm text-gray-600">{report.description}</p>
+                  <h3 className="font-medium text-gray-900 dark:text-white">{report.title}</h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{report.description}</p>
                 </div>
               </div>
             </Link>
@@ -140,7 +140,7 @@ function Dashboard({ user }: DashboardProps) {
       </div>
 
       <div>
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6">Дополнительные разделы</h2>
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Дополнительные разделы</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {additionalSections.map((section) => {
             if (section.type === 'external') {
@@ -148,16 +148,16 @@ function Dashboard({ user }: DashboardProps) {
                 <button
                   key={section.id}
                   onClick={() => handleExternalLink(section.url!)}
-                  className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow text-left w-full"
+                  className="block p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all text-left w-full"
                 >
                   <div className="flex items-center gap-4">
-                    <section.icon className="w-8 h-8 text-purple-600" />
+                    <section.icon className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                     <div className="flex-grow">
                       <div className="flex items-center gap-2">
-                        <h3 className="font-medium text-gray-900">{section.title}</h3>
-                        <ExternalLink className="w-4 h-4 text-gray-400" />
+                        <h3 className="font-medium text-gray-900 dark:text-white">{section.title}</h3>
+                        <ExternalLink className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                       </div>
-                      <p className="text-sm text-gray-600">{section.description}</p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{section.description}</p>
                     </div>
                   </div>
                 </button>
@@ -167,13 +167,13 @@ function Dashboard({ user }: DashboardProps) {
                 <Link
                   key={section.id}
                   to={`/${section.id}`}
-                  className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                  className="block p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all"
                 >
                   <div className="flex items-center gap-4">
-                    <section.icon className="w-8 h-8 text-purple-600" />
+                    <section.icon className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                     <div>
-                      <h3 className="font-medium text-gray-900">{section.title}</h3>
-                      <p className="text-sm text-gray-600">{section.description}</p>
+                      <h3 className="font-medium text-gray-900 dark:text-white">{section.title}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{section.description}</p>
                     </div>
                   </div>
                 </Link>
@@ -185,19 +185,19 @@ function Dashboard({ user }: DashboardProps) {
 
       {user.duty === 'Префектура' && (
         <div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Аналитика</h2>
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Аналитика</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {analyticsSections.map((section) => (
               <Link
                 key={section.id}
                 to={`/analytics/${section.id}`}
-                className="block p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                className="block p-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-all"
               >
                 <div className="flex items-center gap-4">
-                  <section.icon className="w-8 h-8 text-purple-600" />
+                  <section.icon className="w-8 h-8 text-purple-600 dark:text-purple-400" />
                   <div>
-                    <h3 className="font-medium text-gray-900">{section.title}</h3>
-                    <p className="text-sm text-gray-600">{section.description}</p>
+                    <h3 className="font-medium text-gray-900 dark:text-white">{section.title}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{section.description}</p>
                   </div>
                 </div>
               </Link>
@@ -207,15 +207,15 @@ function Dashboard({ user }: DashboardProps) {
       )}
 
       <div>
-        <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
-          <HelpCircle className="w-6 h-6 text-purple-600" />
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+          <HelpCircle className="w-6 h-6 text-purple-600 dark:text-purple-400" />
           Часто задаваемые вопросы
         </h2>
-        <div className="bg-white rounded-lg shadow-sm p-6 space-y-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 space-y-6">
           {faqItems.map((item, index) => (
             <div key={index}>
-              <h3 className="font-medium text-gray-900 mb-2">{item.question}</h3>
-              <p className="text-gray-600">{item.answer}</p>
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">{item.question}</h3>
+              <p className="text-gray-600 dark:text-gray-400">{item.answer}</p>
             </div>
           ))}
         </div>

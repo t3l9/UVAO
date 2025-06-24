@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { User } from './types';
+import { ThemeProvider } from './contexts/ThemeContext';
 import Login from './components/Login';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboards';
@@ -100,15 +101,15 @@ function App() {
 
   if (!user) {
     return (
-      <>
+      <ThemeProvider>
         <Login onLogin={handleLogin} />
         {showInactivityDialog && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
                 Сессия завершена
               </h2>
-              <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 dark:text-gray-400 mb-6">
                 В случае, если Вы не совершаете активных действий в системе,
                 рабочая сессия продолжает оставаться активной в течение 90
                 минут, после чего произойдёт автоматический выход.
@@ -125,25 +126,27 @@ function App() {
             </div>
           </div>
         )}
-      </>
+      </ThemeProvider>
     );
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout user={user} onLogout={handleLogout} />}>
-          <Route index element={<Dashboard user={user} />} />
-          <Route path="report/:type" element={<ReportViewer />} />
-          <Route path="scripts" element={<Scripts />} />
-          <Route path="knowledge" element={<Knowledge user={user} />} />
-          
-          <Route path="analytics/archive" element={<ArchiveReports user={user} />} />
-          <Route path="analytics/dashboard" element={<AnalyticsDashboard user={user} />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout user={user} onLogout={handleLogout} />}>
+            <Route index element={<Dashboard user={user} />} />
+            <Route path="report/:type" element={<ReportViewer />} />
+            <Route path="scripts" element={<Scripts />} />
+            <Route path="knowledge" element={<Knowledge user={user} />} />
+            
+            <Route path="analytics/archive" element={<ArchiveReports user={user} />} />
+            <Route path="analytics/dashboard" element={<AnalyticsDashboard user={user} />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
