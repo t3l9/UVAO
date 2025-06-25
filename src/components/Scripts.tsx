@@ -179,51 +179,51 @@ function Scripts() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Скрипты ответов</h1>
-        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 mb-6">
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Скрипты ответов</h1>
+        <div className="bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 p-4 mb-6">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-5 h-5 text-amber-500" />
-            <p className="font-medium text-amber-800">Важно</p>
+            <p className="font-medium text-amber-800 dark:text-amber-400">Важно</p>
           </div>
-          <p className="mt-2 text-amber-700">
+          <p className="mt-2 text-amber-700 dark:text-amber-400">
             Внимательно ознакомьтесь с содержанием ответа, поскольку названия документов, адресов и т.д. заменены на общие (например, "ООО Ромашка" и т.д.).
           </p>
         </div>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           Используйте фильтры для поиска готовых ответов на обращения граждан.
           Выбирайте параметры последовательно и нажмите "Найти" для получения результатов.
         </p>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
         <div className="flex items-center gap-2 mb-6">
-          <Filter className="w-5 h-5 text-purple-600" />
-          <h2 className="text-lg font-semibold">Фильтры</h2>
+          <Filter className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Фильтры</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           {/* Объект контроля */}
           <div className="relative">
             <div 
-              className="flex items-center justify-between p-2 border border-gray-300 rounded cursor-pointer"
+              className="flex items-center justify-between p-2 border border-gray-300 dark:border-gray-600 rounded cursor-pointer bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
               onClick={() => toggleDropdown('controlObject')}
             >
               <span>{filters.controlObject || "Объект контроля"}</span>
               <ChevronDown className="w-4 h-4" />
             </div>
             {dropdownOpen.controlObject && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg">
+              <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-lg">
                 <input
                   type="text"
                   value={searchTerms.controlObject}
                   onChange={(e) => handleSearchTermChange('controlObject', e.target.value)}
                   placeholder="Поиск..."
-                  className="w-full p-2 border-b border-gray-300 focus:outline-none"
+                  className="w-full p-2 border-b border-gray-300 dark:border-gray-600 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   autoFocus
                 />
                 <div className="max-h-60 overflow-y-auto">
                   <div 
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                     onClick={() => handleFilterChange('controlObject', '')}
                   >
                     Все объекты
@@ -231,7 +231,7 @@ function Scripts() {
                   {filteredOptions.controlObjects.map(option => (
                     <div 
                       key={option} 
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                       onClick={() => handleFilterChange('controlObject', option)}
                     >
                       {option}
@@ -245,25 +245,25 @@ function Scripts() {
           {/* Статус */}
           <div className="relative">
             <div 
-              className={`flex items-center justify-between p-2 border border-gray-300 rounded cursor-pointer ${!filters.controlObject ? 'bg-gray-100' : ''}`}
+              className={`flex items-center justify-between p-2 border border-gray-300 dark:border-gray-600 rounded cursor-pointer ${!filters.controlObject ? 'bg-gray-100 dark:bg-gray-600' : 'bg-white dark:bg-gray-700'} text-gray-900 dark:text-white`}
               onClick={() => filters.controlObject && toggleDropdown('status')}
             >
               <span>{filters.status || "Статус"}</span>
               <ChevronDown className="w-4 h-4" />
             </div>
             {dropdownOpen.status && filters.controlObject && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg">
+              <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-lg">
                 <input
                   type="text"
                   value={searchTerms.status}
                   onChange={(e) => handleSearchTermChange('status', e.target.value)}
                   placeholder="Поиск..."
-                  className="w-full p-2 border-b border-gray-300 focus:outline-none"
+                  className="w-full p-2 border-b border-gray-300 dark:border-gray-600 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   autoFocus
                 />
                 <div className="max-h-60 overflow-y-auto">
                   <div 
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                     onClick={() => handleFilterChange('status', '')}
                   >
                     Все статусы
@@ -271,7 +271,7 @@ function Scripts() {
                   {filteredOptions.statuses.map(option => (
                     <div 
                       key={option} 
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                       onClick={() => handleFilterChange('status', option)}
                     >
                       {option}
@@ -285,25 +285,25 @@ function Scripts() {
           {/* Проблема */}
           <div className="relative">
             <div 
-              className={`flex items-center justify-between p-2 border border-gray-300 rounded cursor-pointer ${!filters.status ? 'bg-gray-100' : ''}`}
+              className={`flex items-center justify-between p-2 border border-gray-300 dark:border-gray-600 rounded cursor-pointer ${!filters.status ? 'bg-gray-100 dark:bg-gray-600' : 'bg-white dark:bg-gray-700'} text-gray-900 dark:text-white`}
               onClick={() => filters.status && toggleDropdown('problem')}
             >
               <span>{filters.problem || "Проблема"}</span>
               <ChevronDown className="w-4 h-4" />
             </div>
             {dropdownOpen.problem && filters.status && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg">
+              <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-lg">
                 <input
                   type="text"
                   value={searchTerms.problem}
                   onChange={(e) => handleSearchTermChange('problem', e.target.value)}
                   placeholder="Поиск..."
-                  className="w-full p-2 border-b border-gray-300 focus:outline-none"
+                  className="w-full p-2 border-b border-gray-300 dark:border-gray-600 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   autoFocus
                 />
                 <div className="max-h-60 overflow-y-auto">
                   <div 
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                     onClick={() => handleFilterChange('problem', '')}
                   >
                     Все проблемы
@@ -311,7 +311,7 @@ function Scripts() {
                   {filteredOptions.problems.map(option => (
                     <div 
                       key={option} 
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                       onClick={() => handleFilterChange('problem', option)}
                     >
                       {option}
@@ -325,25 +325,25 @@ function Scripts() {
           {/* Работы на объекте */}
           <div className="relative">
             <div 
-              className={`flex items-center justify-between p-2 border border-gray-300 rounded cursor-pointer ${!filters.problem ? 'bg-gray-100' : ''}`}
+              className={`flex items-center justify-between p-2 border border-gray-300 dark:border-gray-600 rounded cursor-pointer ${!filters.problem ? 'bg-gray-100 dark:bg-gray-600' : 'bg-white dark:bg-gray-700'} text-gray-900 dark:text-white`}
               onClick={() => filters.problem && toggleDropdown('work')}
             >
               <span>{filters.work || "Работы на объекте"}</span>
               <ChevronDown className="w-4 h-4" />
             </div>
             {dropdownOpen.work && filters.problem && (
-              <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded shadow-lg">
+              <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded shadow-lg">
                 <input
                   type="text"
                   value={searchTerms.work}
                   onChange={(e) => handleSearchTermChange('work', e.target.value)}
                   placeholder="Поиск..."
-                  className="w-full p-2 border-b border-gray-300 focus:outline-none"
+                  className="w-full p-2 border-b border-gray-300 dark:border-gray-600 focus:outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   autoFocus
                 />
                 <div className="max-h-60 overflow-y-auto">
                   <div 
-                    className="p-2 hover:bg-gray-100 cursor-pointer"
+                    className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                     onClick={() => handleFilterChange('work', '')}
                   >
                     Все работы
@@ -351,7 +351,7 @@ function Scripts() {
                   {filteredOptions.works.map(option => (
                     <div 
                       key={option} 
-                      className="p-2 hover:bg-gray-100 cursor-pointer"
+                      className="p-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white"
                       onClick={() => handleFilterChange('work', option)}
                     >
                       {option}
@@ -378,52 +378,52 @@ function Scripts() {
         <div className="grid grid-cols-1 gap-6">
           {filteredScripts.length > 0 ? (
             filteredScripts.map((script) => (
-              <div key={script.id} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
+              <div key={script.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <h3 className="font-medium text-gray-900 mb-4">Информация о проблеме</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">Информация о проблеме</h3>
                     <dl className="space-y-2">
                       <div>
-                        <dt className="text-sm text-gray-600">ID заявки</dt>
-                        <dd className="font-medium">{script.id}</dd>
+                        <dt className="text-sm text-gray-600 dark:text-gray-400">ID заявки</dt>
+                        <dd className="font-medium text-gray-900 dark:text-white">{script.id}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-600">Объект контроля</dt>
-                        <dd className="font-medium">{script.controlObject}</dd>
+                        <dt className="text-sm text-gray-600 dark:text-gray-400">Объект контроля</dt>
+                        <dd className="font-medium text-gray-900 dark:text-white">{script.controlObject}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-600">Категория</dt>
-                        <dd className="font-medium">{script.category}</dd>
+                        <dt className="text-sm text-gray-600 dark:text-gray-400">Категория</dt>
+                        <dd className="font-medium text-gray-900 dark:text-white">{script.category}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-600">Проблема</dt>
-                        <dd className="font-medium">{script.problem}</dd>
+                        <dt className="text-sm text-gray-600 dark:text-gray-400">Проблема</dt>
+                        <dd className="font-medium text-gray-900 dark:text-white">{script.problem}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-600">Статус</dt>
-                        <dd className="font-medium">{script.status}</dd>
+                        <dt className="text-sm text-gray-600 dark:text-gray-400">Статус</dt>
+                        <dd className="font-medium text-gray-900 dark:text-white">{script.status}</dd>
                       </div>
                       <div>
-                        <dt className="text-sm text-gray-600">Работы на объекте</dt>
-                        <dd className="font-medium">{script.work}</dd>
+                        <dt className="text-sm text-gray-600 dark:text-gray-400">Работы на объекте</dt>
+                        <dd className="font-medium text-gray-900 dark:text-white">{script.work}</dd>
                       </div>
                     </dl>
                   </div>
                   <div>
-                    <h3 className="font-medium text-gray-900 mb-4">Ответ и документация</h3>
+                    <h3 className="font-medium text-gray-900 dark:text-white mb-4">Ответ и документация</h3>
                     <div className="space-y-4">
                       <div>
-                        <h4 className="text-sm text-gray-600">Текст ответа ОИВ</h4>
-                        <p className="mt-1 text-gray-800 whitespace-pre-wrap">{script.response}</p>
+                        <h4 className="text-sm text-gray-600 dark:text-gray-400">Текст ответа ОИВ</h4>
+                        <p className="mt-1 text-gray-800 dark:text-gray-300 whitespace-pre-wrap">{script.response}</p>
                       </div>
                       <div>
-                        <h4 className="text-sm text-gray-600">Документы/акты</h4>
-                        <p className="mt-1 text-gray-800 whitespace-pre-wrap">{script.documents}</p>
+                        <h4 className="text-sm text-gray-600 dark:text-gray-400">Документы/акты</h4>
+                        <p className="mt-1 text-gray-800 dark:text-gray-300 whitespace-pre-wrap">{script.documents}</p>
                       </div>
                       {script.notes && (
                         <div>
-                          <h4 className="text-sm text-gray-600">Примечания</h4>
-                          <p className="mt-1 text-gray-800 whitespace-pre-wrap">{script.notes}</p>
+                          <h4 className="text-sm text-gray-600 dark:text-gray-400">Примечания</h4>
+                          <p className="mt-1 text-gray-800 dark:text-gray-300 whitespace-pre-wrap">{script.notes}</p>
                         </div>
                       )}
                     </div>
@@ -432,8 +432,8 @@ function Scripts() {
               </div>
             ))
           ) : (
-            <div className="text-center py-8 bg-white rounded-lg shadow-sm">
-              <p className="text-gray-600">По выбранным фильтрам ничего не найдено</p>
+            <div className="text-center py-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+              <p className="text-gray-600 dark:text-gray-400">По выбранным фильтрам ничего не найдено</p>
             </div>
           )}
         </div>

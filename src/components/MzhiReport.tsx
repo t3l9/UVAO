@@ -42,7 +42,7 @@ const MzhiReport: React.FC<MzhiReportProps> = ({ folderName }) => {
   }, [folderName]);
 
   if (!folderName) {
-    return <div>Название папки не указано.</div>;
+    return <div className="text-gray-900 dark:text-white">Название папки не указано.</div>;
   }
 
   return (
@@ -51,14 +51,14 @@ const MzhiReport: React.FC<MzhiReportProps> = ({ folderName }) => {
         <div className="flex items-center gap-4">
           <Link
             to="/"
-            className="p-2 text-gray-600 hover:text-purple-800 rounded-full hover:bg-purple-50"
+            className="p-2 text-gray-600 dark:text-gray-400 hover:text-purple-800 dark:hover:text-purple-400 rounded-full hover:bg-purple-50 dark:hover:bg-purple-900/20"
           >
             <ArrowLeft size={24} />
           </Link>
-          <h1 className="text-2xl font-bold text-gray-900">Сообщения МЖИ</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Сообщения МЖИ</h1>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 text-gray-600">
+          <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
             <Clock size={20} />
             <span>Обновлено: {lastUpdate || 'Неизвестно'}</span>
           </div>
@@ -71,31 +71,31 @@ const MzhiReport: React.FC<MzhiReportProps> = ({ folderName }) => {
         </div>
       </div>
 
-      <div className="bg-blue-50 border-l-4 border-blue-500 p-4">
+      <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 p-4">
         <div className="flex gap-2">
           <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
-          <p className="text-blue-700">
+          <p className="text-blue-700 dark:text-blue-400">
             Отчет обновляется автоматически каждые 2 часа с 8:30 до 22:30.
           </p>
         </div>
       </div>
 
       {/* Блок ошибки */}
-      {/* <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6"> */}
+      {/* <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4 mb-6"> */}
         {/* <div className="flex items-center gap-2"> */}
           {/* <AlertCircle className="w-5 h-5 text-red-500" /> */}
-          {/* <p className="font-medium text-red-800">Ошибка</p> */}
+          {/* <p className="font-medium text-red-800 dark:text-red-400">Ошибка</p> */}
         {/* </div> */}
-        {/* <p className="mt-2 text-red-700"> */}
+        {/* <p className="mt-2 text-red-700 dark:text-red-400"> */}
           {/* Возникла ошибка при выгрузке Excel-файла с портала. Пожалуйста, подождите следующую выгрузку. */}
         {/* </p> */}
       {/* </div> */}
 
-      <div className="bg-white rounded-lg shadow-sm p-4 min-h-[600px]">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 min-h-[600px]">
         <object data={pdfUrl || ''} type="application/pdf" className="w-full h-[600px]">
-          <p>
+          <p className="text-gray-900 dark:text-white">
             PDF не может быть отображен.{' '}
-            <a href={pdfUrl || '#'} download className="text-purple-600 hover:text-purple-800">
+            <a href={pdfUrl || '#'} download className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300">
               Скачать PDF
             </a>
           </p>

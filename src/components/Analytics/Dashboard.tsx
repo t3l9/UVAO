@@ -67,7 +67,7 @@ const RegionFilter: React.FC<RegionFilterProps> = ({ regions, selectedRegions, o
     <div className="relative inline-block text-left">
       <button
         type="button"
-        className="inline-flex justify-center w-full rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        className="inline-flex justify-center w-full rounded-lg border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500"
         onClick={() => setIsOpen(!isOpen)}
       >
         Выбрать районы ({selectedRegions.includes("all") ? "Все" : selectedRegions.length})
@@ -77,13 +77,13 @@ const RegionFilter: React.FC<RegionFilterProps> = ({ regions, selectedRegions, o
       </button>
       
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-64 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none z-10">
+        <div className="origin-top-right absolute right-0 mt-2 w-64 rounded-lg shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 dark:divide-gray-600 focus:outline-none z-10">
           <div className="py-1 max-h-60 overflow-auto">
             <div className="flex items-center px-4 py-2">
               <input
                 id="filter-all"
                 type="checkbox"
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 dark:border-gray-600 rounded"
                 checked={selectedRegions.includes("all")}
                 onChange={() => {
                   if (selectedRegions.includes("all")) {
@@ -93,7 +93,7 @@ const RegionFilter: React.FC<RegionFilterProps> = ({ regions, selectedRegions, o
                   }
                 }}
               />
-              <label htmlFor="filter-all" className="ml-3 block text-sm text-gray-700">
+              <label htmlFor="filter-all" className="ml-3 block text-sm text-gray-700 dark:text-gray-300">
                 Весь округ
               </label>
             </div>
@@ -102,7 +102,7 @@ const RegionFilter: React.FC<RegionFilterProps> = ({ regions, selectedRegions, o
                 <input
                   id={`filter-${regionId}`}
                   type="checkbox"
-                  className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                  className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 dark:border-gray-600 rounded"
                   checked={selectedRegions.includes(regionId)}
                   onChange={() => {
                     const newSelectedRegions = selectedRegions.includes(regionId)
@@ -111,7 +111,7 @@ const RegionFilter: React.FC<RegionFilterProps> = ({ regions, selectedRegions, o
                     onChange(newSelectedRegions);
                   }}
                 />
-                <label htmlFor={`filter-${regionId}`} className="ml-3 block text-sm text-gray-700">
+                <label htmlFor={`filter-${regionId}`} className="ml-3 block text-sm text-gray-700 dark:text-gray-300">
                   {regionName}
                 </label>
               </div>
@@ -190,8 +190,8 @@ function Dashboard({ user }: ArchiveReportsProps) {
    // Если пользователь не имеет доступа
    if (user.duty !== 'Префектура') {
     return (
-      <div className="bg-red-50 border-l-4 border-red-500 p-4">
-        <p className="text-red-700">
+      <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4">
+        <p className="text-red-700 dark:text-red-400">
           У вас нет доступа к этому разделу. Раздел доступен только для сотрудников Префектуры.
         </p>
       </div>
@@ -209,7 +209,7 @@ function Dashboard({ user }: ArchiveReportsProps) {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="bg-red-50 border-l-4 border-red-500 p-4">
+        <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 p-4">
           <div className="flex items-center">
             <div className="flex-shrink-0">
               <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
@@ -217,7 +217,7 @@ function Dashboard({ user }: ArchiveReportsProps) {
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-sm text-red-700">
+              <p className="text-sm text-red-700 dark:text-red-400">
                 Ошибка загрузки данных: {error}
               </p>
             </div>
@@ -232,16 +232,16 @@ function Dashboard({ user }: ArchiveReportsProps) {
       <div className="flex items-center gap-4">
         <Link
           to="/"
-          className="p-2 text-gray-600 hover:text-purple-800 rounded-full hover:bg-purple-50"
+          className="p-2 text-gray-600 dark:text-gray-400 hover:text-purple-800 dark:hover:text-purple-400 rounded-full hover:bg-purple-50 dark:hover:bg-purple-900/20"
         >
           <ArrowLeft size={24} />
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900">Дашборд</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Дашборд</h1>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
             Количество обращений по дням
           </h2>
           <div className="flex items-center gap-4">
@@ -249,11 +249,11 @@ function Dashboard({ user }: ArchiveReportsProps) {
               <input
                 id="show-overdue"
                 type="checkbox"
-                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 dark:border-gray-600 rounded"
                 checked={showOverdue}
                 onChange={(e) => setShowOverdue(e.target.checked)}
               />
-              <label htmlFor="show-overdue" className="ml-2 text-sm text-gray-700">
+              <label htmlFor="show-overdue" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
                 Показать просроченные
               </label>
             </div>
@@ -304,14 +304,14 @@ function Dashboard({ user }: ArchiveReportsProps) {
       {selectedIssue && (
         <Modal onClose={() => setSelectedIssue(null)}>
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               Детали обращения
             </h3>
             <div className="space-y-2">
-              <p><span className="font-medium">ID:</span> {selectedIssue.id}</p>
-              <p><span className="font-medium">Район:</span> {REGION_IDS[selectedIssue.region_id]}</p>
-              <p><span className="font-medium">Статус:</span> {selectedIssue.status?.title}</p>
-              <p><span className="font-medium">Тема:</span> {selectedIssue.theme?.title}</p>
+              <p className="text-gray-900 dark:text-white"><span className="font-medium">ID:</span> {selectedIssue.id}</p>
+              <p className="text-gray-900 dark:text-white"><span className="font-medium">Район:</span> {REGION_IDS[selectedIssue.region_id]}</p>
+              <p className="text-gray-900 dark:text-white"><span className="font-medium">Статус:</span> {selectedIssue.status?.title}</p>
+              <p className="text-gray-900 dark:text-white"><span className="font-medium">Тема:</span> {selectedIssue.theme?.title}</p>
             </div>
           </div>
         </Modal>
