@@ -4,6 +4,7 @@ import OurCityReport from './OurCityReport';
 import MayorMonitorReport from './MayorMonitorReport';
 import PrefectReport from './PrefectReport';
 import MzhiReport from './MzhiReport';
+import MzhiStatisticsReport from './MzhiStatisticsReport';
 
 // Сопоставление типов отчетов с папками
 const folderMapping: { [key: string]: string } = {
@@ -11,6 +12,7 @@ const folderMapping: { [key: string]: string } = {
   'mayor-monitor': 'MM',
   'prefect': 'Pref',
   'mzhi': 'MWI',
+  'mzhi-statistics': 'MWIS',
 };
 
 function ReportViewer() {
@@ -29,6 +31,8 @@ function ReportViewer() {
         return <PrefectReport folderName={folderName}/>;
       case 'mzhi':
         return <MzhiReport folderName={folderName}/>;
+      case 'mzhi-statistics':
+        return <MzhiStatisticsReport folderName={folderName}/>;
       default:
         return <div>Отчет не найден</div>;
     }

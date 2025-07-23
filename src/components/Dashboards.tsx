@@ -28,6 +28,11 @@ const reportTypes = [
     title: 'Сообщения МЖИ',
     description: 'Контроль обращений в работе от МЖИ',
   },
+  {
+    id: 'mzhi-statistics',
+    title: 'Статистика МЖИ',
+    description: 'Статистика по всем нарушениям МЖИ за отчетный период (в работе и устраненные)',
+  },
 ];
 
 const additionalSections = [

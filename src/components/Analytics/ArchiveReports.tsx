@@ -44,6 +44,11 @@ const reportTypes = [
     title: 'Сообщения МЖИ',
     folder: 'MWI',
   },
+  {
+    id: 'mzhi-statistics',
+    title: 'Статистика МЖИ',
+    folder: 'MWIS',
+  },
 ];
 
 function ArchiveReports({ user }: ArchiveReportsProps) {
