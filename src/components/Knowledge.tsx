@@ -11,6 +11,7 @@ interface Resource {
   description: string;
   type: 'pdf' | 'video';
   filename: string;
+  videoUrl?: string; // URL для видео на внешних платформах
   excelFilename?: string;
   viewInBrowser?: boolean; // Можно ли просматривать в браузере
 }
@@ -51,6 +52,7 @@ const knowledgeSections: Section[] = [
         description: 'Обучающее видео по формированию отчета о работе техники на ДТ и ОДХ с использованием фиксаграммы',
         type: 'video',
         filename: 'vihod.mp4',
+        videoUrl: 'https://rutube.ru/video/example1/', // Замените на вашу ссылку
         excelFilename: 'shablon_vihoda_tehniki.xlsx',
       },
       {
@@ -58,6 +60,7 @@ const knowledgeSections: Section[] = [
         description: 'Обучающее видео по снятию просрока с заявки на АРМ Префектур. Если заявка просрочена по необъективным причинам, вы можете предоставить аргументы и снять просрочку.',
         type: 'video',
         filename: 'delete_monitor.mp4',
+        videoUrl: 'https://rutube.ru/video/example2/', // Замените на вашу ссылку
       },
     ],
   },
@@ -66,7 +69,7 @@ const knowledgeSections: Section[] = [
 
 function Knowledge({ user }: KnowledgeProps) {
   const [activeSection, setActiveSection] = useState<string>('');
-  const [viewingResource, setViewingResource] = useState<Resource | null>(null);
+  const [viewingPdf, setViewingPdf] = useState<Resource | null>(null);
 
   // Фильтруем разделы по правам доступа
   const availableSections = knowledgeSections.filter(section =>
@@ -74,10 +77,13 @@ function Knowledge({ user }: KnowledgeProps) {
   );
 
   const handleViewResource = (resource: Resource) => {
-    if (resource.viewInBrowser && resource.type === 'pdf') {
-      setViewingResource(resource);
+    if (resource.type === 'pdf' && resource.viewInBrowser) {
+      setViewingPdf(resource);
+    } else if (resource.type === 'video' && resource.videoUrl) {
+      // Открываем видео в новой вкладке
+      window.open(resource.videoUrl, '_blank', 'noopener,noreferrer');
     } else {
-      // Для видео или файлов без просмотра в браузере - скачиваем
+      // Для файлов без просмотра - скачиваем
       const link = document.createElement('a');
       link.href = `/baza/${resource.filename}`;
       link.download = resource.filename;
@@ -86,7 +92,7 @@ function Knowledge({ user }: KnowledgeProps) {
   };
 
   const closeViewer = () => {
-    setViewingResource(null);
+    setViewingPdf(null);
   };
 
   return (
@@ -100,14 +106,14 @@ function Knowledge({ user }: KnowledgeProps) {
       </div>
 
       {/* Просмотр PDF в браузере */}
-      {viewingResource && (
+      {viewingPdf && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg w-full h-full max-w-6xl max-h-[90vh] flex flex-col">
             <div className="flex justify-between items-center p-4 border-b dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{viewingResource.title}</h3>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{viewingPdf.title}</h3>
               <div className="flex gap-2">
                 <a
-                  href={`/baza/${viewingResource.filename}`}
+                  href={`/baza/${viewingPdf.filename}`}
                   download
                   className="px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700 transition-colors"
                 >
@@ -123,14 +129,14 @@ function Knowledge({ user }: KnowledgeProps) {
             </div>
             <div className="flex-1 p-4">
               <object
-                data={`/baza/${viewingResource.filename}`}
+                data={`/baza/${viewingPdf.filename}`}
                 type="application/pdf"
                 className="w-full h-full"
               >
                 <p className="text-gray-900 dark:text-white">
                   PDF не может быть отображен.{' '}
                   <a
-                    href={`/baza/${viewingResource.filename}`}
+                    href={`/baza/${viewingPdf.filename}`}
                     download
                     className="text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300"
                   >
@@ -186,15 +192,20 @@ function Knowledge({ user }: KnowledgeProps) {
                           onClick={() => handleViewResource(resource)}
                           className="inline-flex items-center gap-2 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 bg-white dark:bg-gray-600 px-3 py-1 rounded border border-purple-200 dark:border-purple-600 hover:border-purple-300 dark:hover:border-purple-500 transition-colors"
                         >
-                          {resource.viewInBrowser && resource.type === 'pdf' ? (
+                          {resource.type === 'pdf' && resource.viewInBrowser ? (
                             <>
                               <Eye size={16} />
-                              Просмотреть {resource.type === 'pdf' ? 'PDF' : 'видео'}
+                              Просмотреть PDF
+                            </>
+                          ) : resource.type === 'video' && resource.videoUrl ? (
+                            <>
+                              <Video size={16} />
+                              Запустить видео
                             </>
                           ) : (
                             <>
                               <Download size={16} />
-                              Скачать {resource.type === 'pdf' ? 'PDF' : 'видео'}
+                              Скачать файл
                             </>
                           )}
                         </button>
